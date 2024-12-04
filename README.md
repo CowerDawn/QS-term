@@ -14,3 +14,5 @@ Ctrl + T - Change theme
 Ctrl + R - reverse i search
 
 Shift + Insert - pasta
+
+Shift + Home - copy text
