@@ -6,3 +6,11 @@ QS-terminal - GNU terminal for Unix-like system
 `make`
 
 `sudo make install`
+
+# Control
+
+Ctrl + T - Change theme
+
+Ctrl + R - reverse i search
+
+Shift + Insert - pasta
