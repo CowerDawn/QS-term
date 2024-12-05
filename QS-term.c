@@ -3,16 +3,20 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define THEME_LIGHT "light"
+#define THEME_GRAY "gray"
 #define THEME_DARK "dark"
 #define THEME_DARK2 "dark2"
 #define THEME_PINK "pink"
+#define THEME_HOME "home"
+#define THEME_LIGHT "light"
 
 static const char *current_theme = THEME_DARK;
 
 static void set_theme(VteTerminal *terminal, const char *theme) {
-    if (strcmp(theme, THEME_LIGHT) == 0) {
-        vte_terminal_set_colors(terminal, NULL, NULL, NULL, 0);
+    if (strcmp(theme, THEME_GRAY) == 0) {
+        GdkRGBA fg = {0.0, 0.0, 0.0, 1.0};
+        GdkRGBA bg = {0.8, 0.8, 0.8, 1.0};
+        vte_terminal_set_colors(terminal, &fg, &bg, NULL, 0);
     } else if (strcmp(theme, THEME_DARK) == 0) {
         GdkRGBA fg = {1.0, 1.0, 1.0, 1.0};
         GdkRGBA bg = {0.0, 0.0, 0.0, 1.0};
@@ -22,8 +26,16 @@ static void set_theme(VteTerminal *terminal, const char *theme) {
         GdkRGBA bg = {0.15, 0.15, 0.15, 1.0};
         vte_terminal_set_colors(terminal, &fg, &bg, NULL, 0);
     } else if (strcmp(theme, THEME_PINK) == 0) {
-        GdkRGBA fg = {0.0, 0.0, 0.0, 1.0}; 
-        GdkRGBA bg = {0.8, 0.65, 0.7, 1.0}; 
+        GdkRGBA fg = {0.0, 0.0, 0.0, 1.0};
+        GdkRGBA bg = {0.6, 0.45, 0.5, 1.0};
+        vte_terminal_set_colors(terminal, &fg, &bg, NULL, 0);
+    } else if (strcmp(theme, THEME_HOME) == 0) {
+        GdkRGBA fg = {0.8, 0.8, 0.8, 1.0};
+        GdkRGBA bg = {0.2, 0.2, 0.2, 1.0};
+        vte_terminal_set_colors(terminal, &fg, &bg, NULL, 0);
+    } else if (strcmp(theme, THEME_LIGHT) == 0) {
+        GdkRGBA fg = {0.0, 0.0, 0.0, 1.0};
+        GdkRGBA bg = {1.0, 1.0, 1.0, 1.0};
         vte_terminal_set_colors(terminal, &fg, &bg, NULL, 0);
     }
 }
@@ -106,14 +118,18 @@ static gboolean on_key_press_event(GtkWidget *widget, GdkEventKey *event, gpoint
     VteTerminal *terminal = VTE_TERMINAL(data);
 
     if (event->state & GDK_CONTROL_MASK && event->keyval == GDK_KEY_t) {
-        if (strcmp(current_theme, THEME_LIGHT) == 0) {
+        if (strcmp(current_theme, THEME_GRAY) == 0) {
             current_theme = THEME_DARK;
         } else if (strcmp(current_theme, THEME_DARK) == 0) {
             current_theme = THEME_DARK2;
         } else if (strcmp(current_theme, THEME_DARK2) == 0) {
             current_theme = THEME_PINK;
         } else if (strcmp(current_theme, THEME_PINK) == 0) {
+            current_theme = THEME_HOME;
+        } else if (strcmp(current_theme, THEME_HOME) == 0) {
             current_theme = THEME_LIGHT;
+        } else if (strcmp(current_theme, THEME_LIGHT) == 0) {
+            current_theme = THEME_GRAY;
         }
         set_theme(terminal, current_theme);
         return TRUE;
