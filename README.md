@@ -1,5 +1,7 @@
 # QS-term
 QS-terminal - GNU terminal for Unix-like system
+![Uploading QS.png…]()
+
 # Install
 `sudo pacman -S gtk3 vte3`
 
