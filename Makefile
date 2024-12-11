@@ -1,6 +1,6 @@
 TARGET = QS-term
 
-SRC = QS-term.c
+SRC = qs-term.c
 
 CFLAGS = `pkg-config --cflags gtk+-3.0 vte-2.91`
 
