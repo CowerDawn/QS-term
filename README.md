@@ -3,24 +3,26 @@ QS-terminal - GNU terminal for Unix-like system
 
 ![QS](https://github.com/user-attachments/assets/c488ea57-2ab1-4f71-aac7-7e9610c1c384)
 
+# Dependencies: 
 
-# Install
 For Ubuntu/Debian:
 
 `sudo apt update
-sudo apt install build-essential libgtk-3-dev libvte-2.91-dev`
+sudo apt install build-essential libgtk-3-dev libvte-2.91-dev python3 python3-tk`
 
 For Fedora:
 
-`sudo dnf install gcc gtk3-devel vte291-devel`
+`sudo dnf install gcc gtk3-devel vte291-devel python3 python3-tkinter`
 
 For Arch Linux:
 
-`sudo pacman -S base-devel gtk3 vte3`
+`sudo pacman -S base-devel gtk3 vte3 python python-tk`
 
 For OpenSuSe
 
-`sudo zypper install gcc gtk3-devel vte3-devel`
+`sudo zypper install gcc gtk3-devel vte3-devel python3 python3-tk`
+
+# Install
 
 `chmod 777 build`
 
