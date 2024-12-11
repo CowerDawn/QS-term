@@ -6,7 +6,7 @@ REPO_DIR="$(pwd)"
 TARGET_DIR="$HOME/.QS"
 
 if [ ! -d "$TARGET_DIR" ]; then
-    echo "Создание директории $TARGET_DIR..."
+    echo "Create directory $TARGET_DIR..."
     mkdir -p "$TARGET_DIR"
 fi
 
