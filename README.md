@@ -32,6 +32,8 @@ For OpenSuSe
 
 Ctrl + T - Change theme
 
+Ctrl + S - Settings programm
+
 Ctrl + R - reverse i search
 
 Shift + Insert - pasta
