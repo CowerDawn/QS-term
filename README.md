@@ -5,11 +5,25 @@ QS-terminal - GNU terminal for Unix-like system
 
 
 # Install
-`sudo pacman -S gtk3 vte3`
+For Ubuntu/Debian:
+`sudo apt update
+sudo apt install build-essential libgtk-3-dev libvte-2.91-dev`
 
-`make`
+For Fedora:
 
-`sudo make install`
+`sudo dnf install gcc gtk3-devel vte291-devel`
+
+For Arch Linux:
+
+`sudo pacman -S base-devel gtk3 vte3`
+
+For OpenSuSe
+
+`sudo zypper install gcc gtk3-devel vte3-devel`
+
+`chmod 777 build`
+
+`./build`
 
 # Control
 
