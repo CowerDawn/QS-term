@@ -8,6 +8,7 @@ QS-terminal - GNU terminal for Unix-like system
 For Ubuntu/Debian:
 
 `sudo apt update
+
 sudo apt install build-essential libgtk-3-dev libvte-2.91-dev python3 python3-tk bash`
 
 For Fedora:
