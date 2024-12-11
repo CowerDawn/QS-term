@@ -1,0 +1,23 @@
+#!/bin/bash
+sudo make install
+
+REPO_DIR="$(pwd)"
+
+TARGET_DIR="$HOME/.QS"
+
+if [ ! -d "$TARGET_DIR" ]; then
+    echo "Создание директории $TARGET_DIR..."
+    mkdir -p "$TARGET_DIR"
+fi
+
+echo "copy file в $TARGET_DIR..."
+cp "$REPO_DIR/qs-term.c" "$TARGET_DIR/"
+cp "$REPO_DIR/qsset.py" "$TARGET_DIR/"
+
+echo "install QS-term..."
+gcc "$TARGET_DIR/qs-term.c" -o "$TARGET_DIR/qs-term" `pkg-config --cflags --libs gtk+-3.0 vte-2.91`
+
+chmod +x "$TARGET_DIR/qs-term"
+chmod +x "$TARGET_DIR/qsset.py"
+
+echo "Installation is complete."
