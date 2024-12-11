@@ -2,6 +2,8 @@
 #include <vte/vte.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
+#include <glib.h>
 
 #define THEME_GRAY "gray"
 #define THEME_DARK "dark"
@@ -10,7 +12,12 @@
 #define THEME_HOME "home"
 #define THEME_LIGHT "light"
 
+#define CONFIG_FILE "qsset.conf"
+
 static const char *current_theme = THEME_DARK;
+static char *current_font = "Courier 10";
+static char *current_icon = "icon.png";
+static char *current_title = "QS-term";
 
 static void set_theme(VteTerminal *terminal, const char *theme) {
     if (strcmp(theme, THEME_GRAY) == 0) {
@@ -40,6 +47,17 @@ static void set_theme(VteTerminal *terminal, const char *theme) {
     }
 }
 
+static void load_config() {
+    GKeyFile *keyfile = g_key_file_new();
+    if (g_key_file_load_from_file(keyfile, CONFIG_FILE, G_KEY_FILE_NONE, NULL)) {
+        current_font = g_key_file_get_string(keyfile, "Settings", "font", NULL);
+        current_theme = g_key_file_get_string(keyfile, "Settings", "color", NULL);
+        current_icon = g_key_file_get_string(keyfile, "Settings", "icon", NULL);
+        current_title = g_key_file_get_string(keyfile, "Settings", "title", NULL);
+    }
+    g_key_file_free(keyfile);
+}
+
 static void on_copy_clipboard(GtkWidget *widget, gpointer data) {
     VteTerminal *terminal = VTE_TERMINAL(data);
     vte_terminal_copy_clipboard_format(terminal, VTE_FORMAT_TEXT);
@@ -66,11 +84,13 @@ static void on_app_activate(GtkApplication *app, gpointer user_data) {
     GtkWidget *paste_item;
     GtkWidget *title_item;
 
+    load_config();
+
     window = gtk_application_window_new(app);
-    gtk_window_set_title(GTK_WINDOW(window), "QS-term");
+    gtk_window_set_title(GTK_WINDOW(window), current_title);
     gtk_window_set_default_size(GTK_WINDOW(window), 800, 600);
 
-    GdkPixbuf *icon = gdk_pixbuf_new_from_file("icon.png", NULL);
+    GdkPixbuf *icon = gdk_pixbuf_new_from_file(current_icon, NULL);
     if (icon) {
         gtk_window_set_icon(GTK_WINDOW(window), icon);
         g_object_unref(icon);
@@ -91,6 +111,7 @@ static void on_app_activate(GtkApplication *app, gpointer user_data) {
                              NULL); 
 
     set_theme(VTE_TERMINAL(terminal), current_theme);
+    vte_terminal_set_font(VTE_TERMINAL(terminal), pango_font_description_from_string(current_font));
 
     gtk_container_add(GTK_CONTAINER(window), terminal);
 
@@ -145,6 +166,9 @@ static gboolean on_key_press_event(GtkWidget *widget, GdkEventKey *event, gpoint
         return TRUE;
     } else if (event->state & GDK_SHIFT_MASK && event->keyval == GDK_KEY_Home) {
         vte_terminal_copy_clipboard_format(terminal, VTE_FORMAT_TEXT);
+        return TRUE;
+    } else if (event->state & GDK_CONTROL_MASK && event->keyval == GDK_KEY_s) {
+        system("python3 qsset.py &");
         return TRUE;
     }
 
