@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <glib.h>
+#include <glib/gstdio.h>
 
 #define THEME_GRAY "gray"
 #define THEME_DARK "dark"
@@ -12,7 +13,8 @@
 #define THEME_HOME "home"
 #define THEME_LIGHT "light"
 
-#define CONFIG_FILE "qsset.conf"
+#define CONFIG_DIR g_get_user_config_dir()
+#define CONFIG_FILE g_build_filename(CONFIG_DIR, "qsterm", "qsset.conf", NULL)
 
 static const char *current_theme = THEME_DARK;
 static char *current_font = "Courier 10";
@@ -47,9 +49,30 @@ static void set_theme(VteTerminal *terminal, const char *theme) {
     }
 }
 
+static void create_config() {
+    g_mkdir_with_parents(g_build_filename(CONFIG_DIR, "qsterm", NULL), 0755);
+
+    GKeyFile *keyfile = g_key_file_new();
+    g_key_file_set_string(keyfile, "Settings", "font", "Courier 10");
+    g_key_file_set_string(keyfile, "Settings", "color", "dark");
+    g_key_file_set_string(keyfile, "Settings", "icon", "icon.png");
+    g_key_file_set_string(keyfile, "Settings", "title", "QS-term");
+    g_key_file_set_string(keyfile, "Settings", "default_terminal", "no");
+    g_key_file_set_string(keyfile, "Settings", "shortcut_ctrl_s", "yes");
+
+    gsize length;
+    gchar *data = g_key_file_to_data(keyfile, &length, NULL);
+    g_file_set_contents(CONFIG_FILE, data, length, NULL);
+
+    g_key_file_free(keyfile);
+    g_free(data);
+}
+
 static void load_config() {
     GKeyFile *keyfile = g_key_file_new();
-    if (g_key_file_load_from_file(keyfile, CONFIG_FILE, G_KEY_FILE_NONE, NULL)) {
+    if (!g_key_file_load_from_file(keyfile, CONFIG_FILE, G_KEY_FILE_NONE, NULL)) {
+        create_config();
+    } else {
         current_font = g_key_file_get_string(keyfile, "Settings", "font", NULL);
         current_theme = g_key_file_get_string(keyfile, "Settings", "color", NULL);
         current_icon = g_key_file_get_string(keyfile, "Settings", "icon", NULL);
@@ -168,7 +191,7 @@ static gboolean on_key_press_event(GtkWidget *widget, GdkEventKey *event, gpoint
         vte_terminal_copy_clipboard_format(terminal, VTE_FORMAT_TEXT);
         return TRUE;
     } else if (event->state & GDK_CONTROL_MASK && event->keyval == GDK_KEY_s) {
-        system("python3 qsset.py &");
+        system("python3 ~/.QS/qsset.py &");
         return TRUE;
     }
 
