@@ -19,7 +19,7 @@ For Arch Linux:
 
 `sudo pacman -S base-devel gtk3 vte3 python python-tk bash`
 
-For OpenSuSe
+For OpenSuSe:
 
 `sudo zypper install gcc gtk3-devel vte3-devel python3 python3-tk bash`
 
@@ -37,6 +37,6 @@ Ctrl + S - Settings programm
 
 Ctrl + R - reverse i search
 
-Shift + Insert - pasta
+Shift + Insert - pasta text
 
 Shift + Home - copy text
