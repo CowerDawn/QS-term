@@ -6,6 +6,7 @@ QS-terminal - GNU terminal for Unix-like system
 
 # Install
 For Ubuntu/Debian:
+
 `sudo apt update
 sudo apt install build-essential libgtk-3-dev libvte-2.91-dev`
 
